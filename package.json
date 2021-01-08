@@ -1,0 +1,19 @@
+{
+  "name": "wetube-cloning",
+  "version": "1.0.0",
+  "description": "cloning youtube with VanillaJS and NodeJS",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wonseok2877/wetube-cloning.git"
+  },
+  "author": "rahula",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wonseok2877/wetube-cloning/issues"
+  },
+  "homepage": "https://github.com/wonseok2877/wetube-cloning#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
