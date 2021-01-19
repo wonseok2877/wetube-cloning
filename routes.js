@@ -1,3 +1,4 @@
+// import { user } from "./middlewares";
 /* 8-2. global routes
 whenever we need to change url or use them elsewhere,
 it's helpful to divide and conquer, so we don't have to remember the whole structure.  */
@@ -10,12 +11,13 @@ const SEARCH = "/search";
 
 // Users url
 const USERS = "/users";
-const USER_DETAIL = "/:id";
 const EDIT_PROFILE = "/edit-profile";
 const CHANGE_PASSWORD = "/change-password";
+const USER_DETAIL = "/:id";
 
 // Videos url
 const VIDEOS = "/videos";
+// ? : 아니 그냥 싹다 공통 적용하면 안 돼? 왜 template에서 다르게 적용하는거? 따로 쓸 필요가 있는 페이지들인건가?
 const UPLOAD = "/upload";
 const VIDEO_DETAIL = "/:id";
 const EDIT_VIDEO = "/:id/edit";
@@ -30,12 +32,26 @@ const routes = {
   logout: LOGOUT,
   search: SEARCH,
   users: USERS,
-  userDetail: USER_DETAIL,
+  /*12-1. routes의 url 포인팅 자체를 함수로 만든다.
+   template에서 유저마다 각각 다르게 보내는 id 값을 받을 준비를 하는 것.*/
+  userDetail: (id) => {
+    if (id) {
+      return `${USERS}/${id}`;
+    } else {
+      return USER_DETAIL;
+    }
+  },
   editProfile: EDIT_PROFILE,
   changePassword: CHANGE_PASSWORD,
   videos: VIDEOS,
   upload: UPLOAD,
-  videoDetail: VIDEO_DETAIL,
+  videoDetail: (id) => {
+    if (id) {
+      return `${VIDEOS}/${id}`;
+    } else {
+      return VIDEO_DETAIL;
+    }
+  },
   editVideo: EDIT_VIDEO,
   deleteVideo: DELETE_VIDEO,
 };

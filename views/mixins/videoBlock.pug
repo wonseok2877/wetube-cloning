@@ -1,0 +1,14 @@
+//-11-2. how can I reuse repeating codes in html?
+//- 여기서부터 조금 달라. html 코드를 처음부터 작성하지 않을거야.
+//- mixin ! : kind of function in  pug
+//- argument는 아무이름으로 지어도 상관없다. function에 객체 argument가 입력되면, 그 객체의 이름을 저걸로 하기로 정한것
+mixin videoBlock(video = {})
+    .videoBlock
+        a(href=routes.videoDetail(video.id))
+            //- how can I put video in my website?
+            //- :src. bring the video url into video block !
+            video.videoBlock__thumbnail(src=video.videoFile, controls=true)
+            h4= video.titleee
+            h2= video.description
+            h6= video.views
+        //- = : ${}같은 역할. video 객체의 요소들을 가져오는중

@@ -1,0 +1,17 @@
+extends layouts/main.pug
+include mixins/videoBlock
+
+block content
+    .search__header
+        //- requesting searchingBy, responding from videoController.js
+        h3 Searching for : #{searchingBy}
+    block video
+        .search__videos
+            //- same as home template
+            each nanana in videos            
+                +videoBlock({
+                    titleee:nanana.title,
+                    description:nanana.description,
+                    views:nanana.views,
+                    videoFile:nanana.videoFile,
+                })

@@ -16,7 +16,8 @@ const userRouter = express.Router();
 userRouter.get("/", users);
 userRouter.get(routes.editProfile, userEdit);
 userRouter.get(routes.changePassword, userPassword);
-userRouter.get(routes.userDetail, userDetail);
+// 12-2. 항상 그래왔듯이, 중앙 관리는 router이다. 여기선 route를 함수 형태로 쓴다.
+userRouter.get(routes.userDetail(), userDetail);
 
 export default userRouter;
 

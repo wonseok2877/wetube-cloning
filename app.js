@@ -16,6 +16,7 @@ import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 import globalRouter from "./routers/globalRouter";
 import routes from "./routes";
+import { helmetFuck, localsMiddleware } from "./middlewares";
 
 // making application of express
 const app = express();
@@ -36,16 +37,25 @@ Or we can apply locally, by put the middleware function between the route and ca
 first, cookie-parser defines cookie. second, body-parser defines body. 
 third, helmet will make security. the last,  morgan will log everything. and then finally, we arrive to our routes. */
 
+// helmet as a security middleware.
+app.use(helmet());
+// 10-2. how to set pug as a view engine? pug과 express에는 view파일들의 위치에 관한 기본 설정이 있음
+app.set("view engine", "pug");
 // cookie-parser as a cookie defining middleware.
 app.use(cookieParser());
 // body-parser as a body defining middleware. in here, it is defining json and urlencoded.
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// helmet as a security middleware.
-app.use(helmet());
 // morgan as a logging middleware. it has some options to logging, and they show us many informations.
 app.use(morgan("dev"));
 
+/* 10-3.  I wanna access from header partial to routes object !
+: we have to use middleware.
+locals : local variable into global variable */
+
+app.use(localsMiddleware);
+
+app.use(helmetFuck);
 /* 4. how the connection starts? : when it starts, it will execute the index file. 
 And the application(`app = express()`), and find the route(`"/"`), 
 okay he is asking me for the home, and it will execute the handleHome. */

@@ -1,0 +1,13 @@
+extends layouts/main.pug
+
+block content
+    .form-container
+        form(action=`${routes.users + routes.editProfile}`, method="post")
+            //-  label for : 클릭의 유효범위를 확장시켜줄 때 사용함.
+            label(for="avatar") Avatar
+            input(type="file" id="avatar" name="avatar")
+            input(type="text", placeholder="Name" name="Name")
+            input(type="email", placeholder="Email", name="email")
+            input(type="submit", value="Update Profile")
+    //- 왜 `${}`식으로 하는거? 매번 앞에다 users 붙여야 대?
+    a.form-container__link(href=`${routes.users + routes.changePassword}`) Change Password

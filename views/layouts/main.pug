@@ -1,0 +1,16 @@
+//- 10-1. pug ! : it's a template language, makes your html so much better
+//- with pug, we can use the power of javascript in creating html
+
+//- this is sort of a base file of all other pages. every html has head and body and link css right?
+//- there should be a space for the contents in main layout.
+//- putting all the contents of other pages, on the block in the main tag
+doctype html
+html
+    head
+        link(rel="stylesheet", href="https://use.fontawesome.com/releases/v5.5.0/css/all.css",integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU", crossorigin="anonymous")
+        title #{pageTitle} | #{siteName}
+    body
+        include ../partials/header
+        main
+            block content
+        include ../partials/footer

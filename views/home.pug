@@ -1,0 +1,25 @@
+//- 11. how can I get data from DB, to the template?
+//- : each in ! db.js에서 선언된 객체인 videos의 각 아이들을 가져온다.
+//- 근데 video는 어디서 오는거? : db.js에서 정의되고 videoController에서 import된 data array.
+extends layouts/main.pug
+include mixins/videoBlock
+
+block content
+    .videos
+        //- iteration ! .객체 array속 객체들을 하나하나 가져온다. 
+        each blahblahblah in videos
+            //- 11-3. let's put data in DB to here
+            //- : mixin에서 만든 videoBlock함수를 가져오고, 그 함수의 argument를 객체로서 정의한다. 여기서는 data들을 가져오지
+            +videoBlock({
+                id:blahblahblah.id,
+                titleee:blahblahblah.title,
+                description:blahblahblah.description,
+                views:blahblahblah.views,
+                videoFile:blahblahblah.videoFile,
+            })
+            //-     h1= blahblahblah.title
+            //-     p= blahblahblah.description
+            //-     p= blahblahblah.views
+
+            //- each aaaa in [1,2,3,4,5,6,7,8,9000]
+            //-     h1=aaaa
