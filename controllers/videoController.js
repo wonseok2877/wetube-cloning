@@ -6,7 +6,10 @@ export const videoHome = async (req, res) => {
   // try & catch : error 잡아내기. 디폴트로 error을 잡아내지 못하는건 nodeJS의 문제점.
   try {
     /* 15-4. how we find all the data in model ? 
-    .find({}) : finds any video in database ../models/Video.*/
+    .find({}) : finds any video in database ../models/Video.
+    mongoose has a lot of options to do something like this.
+    If you want to query by a document's _id, use findById().
+    The id is cast based on the Schema before sending the command. --- mongoosejs.com */
     const videos = await Video.find({});
     // throw Error("hohohohohooo");
 
@@ -79,8 +82,30 @@ export const videoPostUpload = async (req, res) => {
   res.redirect(routes.videoDetail(newVideo.id));
 };
 
-export const videoDetail = (req, res) =>
-  res.render("video-detail", { pageTitle: "Video Detail" });
+export const videoDetail = async (req, res) => {
+  // console.log(req.params) :   { sexymotherfuucker: '6007ddfbc780ef2fe0f5b9d4' }
+  // : if the name of id is sexymotherfuucker, it should be equal to the route "/:sexymotherfuucker" in the routes
+  const {
+    params: { id },
+  } = req;
+
+  try {
+    // model.findById : id «Any» value of _id to query by
+    const video = await Video.findById(id);
+    console.log(req.params);
+    console.log(video);
+    res.render("video-detail", { pageTitle: "Video Detail", video });
+  } catch (error) {
+    /* even if the user made mistake writing url, it will catch error and prevent the shut down.
+    CastError: Cast to ObjectId failed for value "6007ddfbc780ef2fe0f5b9d4a" at path "_id" for model "Video" 
+    OR reason: Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters*/
+    console.log(error);
+    // 유투브는 원래 있던 비디오 페이지로 되돌린다. I wanna do that.
+    res.render("video-detail", { pageTitle: "Video Detail" });
+
+    // res.redirect(routes.home);
+  }
+};
 
 export const videoEdit = (req, res) =>
   res.render("video-edit", { pageTitle: "Video Edit" });

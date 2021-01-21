@@ -7,15 +7,17 @@ include mixins/videoBlock
 block content
     .videos
         //- iteration ! .객체 array속 객체들을 하나하나 가져온다. 
+        //- 이 videos는 어디서 온거,,?
         each blahblahblah in videos
             //- 11-3. let's put data in DB to here
             //- : mixin에서 만든 videoBlock함수를 가져오고, 그 함수의 argument를 객체로서 정의한다. 여기서는 data들을 가져오지
+            //- videoFile(가짜 데이터 만들었을때의 url이름)에서 fileUrl로 변경.
             +videoBlock({
                 id:blahblahblah.id,
                 titleee:blahblahblah.title,
                 description:blahblahblah.description,
                 views:blahblahblah.views,
-                videoFile:blahblahblah.videoFile,
+                videoFile:blahblahblah.fileUrl,
             })
             //-     h1= blahblahblah.title
             //-     p= blahblahblah.description

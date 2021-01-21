@@ -2,7 +2,7 @@
  1. how do I install node packages including express? : npm. node package manager. npm comes with node.js, so don't worry. the command will automatically created.
 require or import: importing 'express' folder from the node_modules. then, wtf is the 'express' here? it is a bunch of requires*/
 
-// const express = require("express"); in here, we use babel, which compiles new sexy ES6 syntax to normal javascript.
+// const express = require("express"); from now, we use babel, which compiles new sexy ES6 syntax to normal javascript.
 import express from "express";
 // morgan : a middleware helps us for logging
 import morgan from "morgan";
@@ -41,6 +41,10 @@ third, helmet will make security. the last,  morgan will log everything. and the
 app.use(helmet());
 // 10-2. how to set pug as a view engine? pug과 express에는 view파일들의 위치에 관한 기본 설정이 있음
 app.set("view engine", "pug");
+/* 15-7. video upload를 위한 기본 route설정 : express.static() ! d
+directory에서 file을 보내주는 middleware
+이 경우엔 /uploads 주소로 가면, upload라는 directory안으로 들어간다는 뜻이지. */
+app.use("/uploads", express.static("uploads"));
 // cookie-parser as a cookie defining middleware.
 app.use(cookieParser());
 // body-parser as a body defining middleware. in here, it is defining json and urlencoded.

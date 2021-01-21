@@ -26,7 +26,7 @@ export const helmetFuck = (req, res, next) => {
   return next();
 };
 
-// 15-5. multer : 유저가 upload할 때 그 url을 반환해주는 middleware
-const multerVideo = multer({ dest: "videos/" });
+// 15-6. multer : 유저가 upload할 때 그 url을 반환해주는 middleware
+const multerVideo = multer({ dest: "uploads/videos/" });
 // .single : 오직 하나의 파일만 upload할 수 있도록. 뒤에는 videoupload 템플릿 input의 name
 export const uploadVideoMiddleware = multerVideo.single("videoFile");
