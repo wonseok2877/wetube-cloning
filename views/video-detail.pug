@@ -2,8 +2,19 @@ extends layouts/main.pug
 
 block content
     .video__player
+        //- src는 controller에서 res.render에서 pagetitle과 같이 보내준 video, 즉 해당 data이다? fileUrl은 models에서 정의됨.
+        //- video는 컨트롤러를 통해 왔지만, 결국 DB에서 결정되는 것.
+        //-  / : 서버에 있는 파일이라서 붙여줘야 함..root로 간다는 뜻인가?
+        //- / means from the root of the website, without / it means from the current page.
         video(src=`/${video.fileUrl}` controls=true)
     .video__info
+        //- editVideo는 인자값의 따라 어느 페이지를 달리할지 결정하는 함수이고, router에서는 해당 페이지가 id를 포함한 video 데이터를 받는다. 따라서 그 데이터객체의 id를 받아야함.
+        a(href=routes.editVideo(video.id)) edit video~
         h5.video__title=video.title
         span.video__views=video.views
         p.video__description=video.description
+    .video__comments
+        if video.comments.length === 1
+            span.video__comment-number 1 comment
+        else
+            span.video__comment-number #{video.comments.length} comments

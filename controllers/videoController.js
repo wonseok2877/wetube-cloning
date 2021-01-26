@@ -10,7 +10,8 @@ export const videoHome = async (req, res) => {
     mongoose has a lot of options to do something like this.
     If you want to query by a document's _id, use findById().
     The id is cast based on the Schema before sending the command. --- mongoosejs.com */
-    const videos = await Video.find({});
+    // .sort : 그냥 array정렬 방식이다. 데이터 정렬의 순서를 바꿀 수 있다. 여기서 -1로 바꾸면 예전 비디오부터 정렬됨
+    const videos = await Video.find({}).sort({ _id: 1 });
     // throw Error("hohohohohooo");
 
     /* 11. how can I get data from DB, to the template?
@@ -23,7 +24,7 @@ export const videoHome = async (req, res) => {
   }
 };
 
-export const videoSearch = (req, res) => {
+export const videoSearch = async (req, res) => {
   //   console.log(req)  : query: { teeeerm: 'suckmyass' }
   /* `req` is an object !
   url: '/search?teeeerm=understanding',
@@ -34,13 +35,22 @@ export const videoSearch = (req, res) => {
   path: '/search?teeeerm=understanding',
   query: { teeeerm: 'understanding' },
   res: <ref *3> ServerResponse { ..... }*/
-  // ES6 ! same as const searchingBy = req.query.teeeerm
   const {
-    //   serchingBy = req.query.teeeerm
+    // ES6 ! same as const searchingBy = req.query.teeeerm
     query: { teeeerm: searchingBy },
+    // params: { id },
   } = req;
-  console.log(res);
-  console.log(req.query);
+  // let으로 하는 이유는 DB에서 받은 비디오로 reassign할것이기 때문
+  let videos = [];
+  try {
+    /* videos=await Video.find({title: searchingBy})
+    이렇게 해도 되긴 한다. 그러나 야무지게 찾으려면 mongo의 regular expression이라는 도구를 써야함 */
+    videos = await Video.find({
+      title: { $regex: searchingBy, $options: "i" },
+    });
+  } catch (error) {
+    console.log(error);
+  }
 
   res.render("search", { pageTitle: "Search", searchingBy, videos });
 };
@@ -86,29 +96,83 @@ export const videoDetail = async (req, res) => {
   // console.log(req.params) :   { sexymotherfuucker: '6007ddfbc780ef2fe0f5b9d4' }
   // : if the name of id is sexymotherfuucker, it should be equal to the route "/:sexymotherfuucker" in the routes
   const {
+    // route의 :id를 그대로 요청에다가 쓴다 !
     params: { id },
   } = req;
 
   try {
-    // model.findById : id «Any» value of _id to query by
-    const video = await Video.findById(id);
     console.log(req.params);
+    // model.findById : id에 따라 data를 찾는 mongoDB 함수. id «Any» value of _id to query by
+    const video = await Video.findById(id);
     console.log(video);
-    res.render("video-detail", { pageTitle: "Video Detail", video });
+    // 실제 비디오 data인 video가 template로 전달된다 ! video : video.
+    res.render("video-detail", { pageTitle: video.title, video });
   } catch (error) {
     /* even if the user made mistake writing url, it will catch error and prevent the shut down.
     CastError: Cast to ObjectId failed for value "6007ddfbc780ef2fe0f5b9d4a" at path "_id" for model "Video" 
     OR reason: Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters*/
     console.log(error);
     // 유투브는 원래 있던 비디오 페이지로 되돌린다. I wanna do that.
-    res.render("video-detail", { pageTitle: "Video Detail" });
+    // ? 근데 이전의 페이지로 돌려보내든가 해야되는거 아냐? 지금은 개판이다.
+    // res.render("video-detail", { pageTitle: "Video Detail" });
 
-    // res.redirect(routes.home);
+    res.redirect(routes.home);
   }
 };
 
-export const videoEdit = (req, res) =>
-  res.render("video-edit", { pageTitle: "Video Edit" });
+export const getVideoEdit = async (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  // console.log(req.params);
+  try {
+    const video = await Video.findById(id);
+    // console.log(video);
+    res.render("video-edit", { pageTitle: `Edit ${video.title}`, video });
+  } catch (error) {
+    console.log(error);
+    res.redirect(routes.home);
+  }
+};
 
-export const videoDelete = (req, res) =>
+export const postVideoEdit = async (req, res) => {
+  const {
+    params: { id },
+    // 제목과 설명을 가져와서 바꿔야 하기 때문에 body가 필요하다
+    body: { title, description },
+  } = req;
+  try {
+    // 왜 이렇게 하냐면, 이걸 새로운 변수로 저장하고 싶지 않고 업데이트한 결과물은 별로 관심 없거든.
+    /* findOneAndUpdate : 몽고DB의 함수. 
+    title과 description은 model에서 정한 이름과 똑같이.
+    여기서 모두 연겷되어 있어. model과 template이 같은 이름은 써야해.
+    */ // _id is created automatically in mongoDB to make sure we have unique ids.
+    await Video.findOneAndUpdate({ _id: id }, { title, description });
+    res.redirect(routes.home);
+    /* ? : 다시 이 페이지로 돌아오는 방법은 없나?
+    await Promise.all([
+      Video.findOneAndUpdate({ _id: id }, { title, description }),
+      (video = Video.findById(id)),
+    ]);*/
+    // console.log(video);
+    // res.redirect(routes.videoDetail(id));
+    // middleware을 써서 중간에서 redirect시켜도 되긴함. 그렇게 되면 try&catch를 안써도 되는 것
+  } catch (error) {
+    console.log(error);
+    res.redirect(routes.home);
+  }
+};
+
+export const videoDelete = async (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  try {
+    // findOneAndRemove : collection에서 하나 골라서 없애쥰당
+    await Video.findOneAndRemove({ _id: id });
+  } catch (error) {
+    console.log(error);
+  }
+  res.redirect(routes.home);
   res.render("video-delete", { pageTitle: "Video Delete" });
+};

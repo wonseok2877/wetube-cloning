@@ -1,5 +1,5 @@
-import routes from "./routes";
 import multer from "multer";
+import routes from "./routes";
 
 // we divided middleware from app.js
 export const localsMiddleware = (req, res, next) => {

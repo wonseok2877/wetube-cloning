@@ -44,6 +44,7 @@ export const postJoin = (req, res) => {
 // different two functions. similar logic as the join page.
 export const getLogin = (req, res) =>
   res.render("login", { pageTitle: "Logging In" });
+// ? router에서 post방식으로 되어있는데 이건 왜 res이지? post라고 해서 꼭 req는 아닌건가?
 export const postLogin = (req, res) => {
   res.redirect(routes.home);
 };

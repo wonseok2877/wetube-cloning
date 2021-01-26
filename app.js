@@ -41,13 +41,14 @@ third, helmet will make security. the last,  morgan will log everything. and the
 app.use(helmet());
 // 10-2. how to set pug as a view engine? pug과 express에는 view파일들의 위치에 관한 기본 설정이 있음
 app.set("view engine", "pug");
-/* 15-7. video upload를 위한 기본 route설정 : express.static() ! d
-directory에서 file을 보내주는 middleware
+/* 15-7. video upload를 위한 기본 route설정 
+express.static() ! : directory에서 file을 보내주는 middleware
 이 경우엔 /uploads 주소로 가면, upload라는 directory안으로 들어간다는 뜻이지. */
 app.use("/uploads", express.static("uploads"));
 // cookie-parser as a cookie defining middleware.
 app.use(cookieParser());
 // body-parser as a body defining middleware. in here, it is defining json and urlencoded.
+// .json ! : change the json format into javascript object
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // morgan as a logging middleware. it has some options to logging, and they show us many informations.
@@ -74,6 +75,7 @@ app.use(routes.users, userRouter);
 app.use(routes.videos, videoRouter);
 
 /* 6. how can we share the application that we made, with other file?
-export : when somebody import my file, I'm going to give him the app object
+ES6 export !
+: when somebody import my file, I'm going to give him the app object
 the app object is that we configured such as app.use ~, app.get ~  */
 export default app;

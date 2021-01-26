@@ -13,6 +13,7 @@ const SEARCH = "/search";
 const USERS = "/users";
 const EDIT_PROFILE = "/edit-profile";
 const CHANGE_PASSWORD = "/change-password";
+// 어떤 data를 가지고 있다는걸 표현하고 싶다면 : 과 이름을 넣으면 돼. :는 주시하고 있다는거야. 이게 url로부터 정보를 가져오는 유일한 방법.
 const USER_DETAIL = "/:id";
 
 // Videos url
@@ -52,8 +53,20 @@ const routes = {
       return VIDEO_DETAIL;
     }
   },
-  editVideo: EDIT_VIDEO,
-  deleteVideo: DELETE_VIDEO,
+  editVideo: (id) => {
+    if (id) {
+      return `/videos/${id}/edit`;
+    } else {
+      return EDIT_VIDEO;
+    }
+  },
+  deleteVideo: (id) => {
+    if (id) {
+      return `/videos/${id}/delete`;
+    } else {
+      return DELETE_VIDEO;
+    }
+  },
 };
 
 // by exporting, now I can use them everywhere.

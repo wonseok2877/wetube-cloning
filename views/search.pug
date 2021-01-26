@@ -7,11 +7,15 @@ block content
         h3 Searching for : #{searchingBy}
     block video
         .search__videos
+            //- if문 !
+            if videos.length === 0
+                h2 No Videos Found😢
             //- same as home template
-            each nanana in videos            
+            each nanana in videos           
                 +videoBlock({
+                    id: nanana.id,
                     titleee:nanana.title,
                     description:nanana.description,
                     views:nanana.views,
-                    videoFile:nanana.videoFile,
+                    videoFile:nanana.fileUrl,
                 })
