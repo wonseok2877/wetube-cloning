@@ -1,26 +1,27 @@
 header.header
-    .header__column
-        a(href=routes.home)
-            i.fab.fa-youtube
-    .header__column
-        //- ?   form and input
-        //- controller도 req.query객체에 접근하려면, method가 get이어야 해. 왜냐하면 get method는 url에 정보를 추가해주거든 !
-        form(action=routes.search, method="get")
-            input(type="text", placeholder="search by term...", name="teeeerm")
-    .header__column
-        ul
-            //- if user value is true, then 
-            if !user.isAuthentificated
-                li
-                    //- connecting routes to each web page. this is exactly same mechanism of HTML.
-                    a(href=routes.join) Join
-                li
-                    a(href=routes.login) Log In 
-            else
-                li
-                    a(href=`/videos${routes.upload}`) Upload 
-                li
-                    //- 12-3. middleWare에서 공유한 user.id를 url로 포인팅한다.
-                    a(href=routes.userDetail(user.id)) Profile
-                li
-                    a(href=routes.logout) Log Out
+    .header__wrapper
+        .header__column
+            a(href=routes.home)
+                i.fab.fa-youtube
+        .header__column
+            //- ?   form and input
+            //- controller도 req.query객체에 접근하려면, method가 get이어야 해. 왜냐하면 get method는 url에 정보를 추가해주거든 !
+            form(action=routes.search, method="get")
+                input(type="text", placeholder="search by term...", name="teeeerm")
+        .header__column
+            ul
+                //- if user value is true, then 
+                if !user.isAuthentificated
+                    li
+                        //- connecting routes to each web page. this is exactly same mechanism of HTML.
+                        a(href=routes.join) Join
+                    li
+                        a(href=routes.login) Log In 
+                else
+                    li
+                        a(href=`/videos${routes.upload}`) Upload 
+                    li
+                        //- 12-3. middleWare에서 공유한 user.id를 url로 포인팅한다.
+                        a(href=routes.userDetail(user.id)) Profile
+                    li
+                        a(href=routes.logout) Log Out

@@ -2,6 +2,9 @@
 import "./db";
 import dotenv from "dotenv";
 import app from "./app";
+import "./models/Video";
+import "./models/Comment";
+import "./models/User";
 // impoting dotenv and configuration
 dotenv.config();
 
@@ -12,5 +15,5 @@ const PORT = process.env.PORT || 4000;
 const handleListening = () =>
   console.log(`✔ I'm listening on http://localhost:${PORT} !`);
 
-// 2. how can I make a server ? server is now listening by the port number
+// 2. 서버 만들기. how can I make a server ? server is now listening by the port number
 app.listen(PORT, handleListening);

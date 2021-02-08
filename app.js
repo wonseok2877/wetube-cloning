@@ -1,5 +1,5 @@
-/* how the node.js project works??
- 1. how do I install node packages including express? : npm. node package manager. npm comes with node.js, so don't worry. the command will automatically created.
+/*  1. node.js project 시작 
+ how do I install node packages including express? : npm. node package manager. npm comes with node.js, so don't worry. the command will automatically created.
 require or import: importing 'express' folder from the node_modules. then, wtf is the 'express' here? it is a bunch of requires*/
 
 // const express = require("express"); from now, we use babel, which compiles new sexy ES6 syntax to normal javascript.
@@ -16,7 +16,7 @@ import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 import globalRouter from "./routers/globalRouter";
 import routes from "./routes";
-import { helmetFuck, localsMiddleware } from "./middlewares";
+import { localsMiddleware } from "./middlewares";
 
 // making application of express
 const app = express();
@@ -45,6 +45,10 @@ app.set("view engine", "pug");
 express.static() ! : directory에서 file을 보내주는 middleware
 이 경우엔 /uploads 주소로 가면, upload라는 directory안으로 들어간다는 뜻이지. */
 app.use("/uploads", express.static("uploads"));
+/* 웹팩 적용.
+pug template에서 static 폴더의 css파일과 js파일등을 찾을 때, 
+그 경로를 글로벌하게 설정해준다.  */
+app.use("/static", express.static("static"));
 // cookie-parser as a cookie defining middleware.
 app.use(cookieParser());
 // body-parser as a body defining middleware. in here, it is defining json and urlencoded.
@@ -60,7 +64,7 @@ locals : local variable into global variable */
 
 app.use(localsMiddleware);
 
-app.use(helmetFuck);
+// app.use(helmetFuck);
 /* 4. how the connection starts? : when it starts, it will execute the index file. 
 And the application(`app = express()`), and find the route(`"/"`), 
 okay he is asking me for the home, and it will execute the handleHome. */
@@ -75,7 +79,7 @@ app.use(routes.users, userRouter);
 app.use(routes.videos, videoRouter);
 
 /* 6. how can we share the application that we made, with other file?
-ES6 export !
+export !
 : when somebody import my file, I'm going to give him the app object
 the app object is that we configured such as app.use ~, app.get ~  */
 export default app;

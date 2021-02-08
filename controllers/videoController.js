@@ -1,3 +1,4 @@
+// 우리가 model 몇개를 만들든간에, 함수로 import하기 전까지 database에서는 인식을 못해.
 import Video from "../models/Video";
 import routes from "../routes";
 // 10-5. in render function, 1st argument is the template and 2nd is an object of informations in individual template.

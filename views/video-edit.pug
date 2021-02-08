@@ -2,6 +2,7 @@ extends layouts/main.pug
 
 block content
      .form-container
+        //- ? : 이 함수들은 어떻게 여기로 온거? 
         form(action=routes.editVideo(video.id), method="post")
             //- name들은 postEditVideo 함수에서 body로 쓰인다
             input(type="text", placeholder="Title", name="title", value=video.title)
